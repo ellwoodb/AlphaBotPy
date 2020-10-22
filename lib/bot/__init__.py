@@ -4,7 +4,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 from discord.ext.commands import Bot as BotBase
-from discord import Embed , File
+from discord import Embed, File
 from discord.ext.commands import CommandNotFound
 
 from ..db import db
@@ -33,7 +33,7 @@ class Bot(BotBase):
         print("running bot...")
         super().run(self.TOKEN, reconnect=True)
 
-    #async def print_message(self):
+    # async def print_message(self):
     #    channel = self.get_channel(599569584005185539)
     #    await channel.send("Timed Test.")
 
@@ -49,7 +49,7 @@ class Bot(BotBase):
 
         error_log = self.get_channel(768867099614773358)
         await error_log.send("Oh ein Error!")
-            
+
     async def on_command_error(self, ctx, exc):
         if isinstance(exc, CommandNotFound):
             pass
@@ -67,27 +67,26 @@ class Bot(BotBase):
             #self.scheduler.add_job(self.print_message, CronTrigger(second="0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55"))
             self.scheduler.start()
 
-            #define channel to send message in
+            # define channel to send message in
             channel = self.get_channel(599569584005185539)
-            #Send message
+            # Send message
             await channel.send("Ich bin online!")
 
-            #Send embed
+            # Send embed
             #embed = Embed(title="Online", description="Alpha Bot ist online!", colour=0xFF0000, timestamp=datetime.utcnow())
-            #fields = [("Name", "Value", True), 
+            # fields = [("Name", "Value", True),
             #          ("Test", "Test", True),
             #          ("Test2", "Test2", False)]
-            #for name, value, inline in fields:
+            # for name, value, inline in fields:
             #    embed.add_field(name=name, value=value, inline=inline)
             #embed.set_footer(text="Footer Test")
             #embed.set_author(name="Alpha Bot", icon_url=self.guild.icon_url)
-            #embed.set_thumbnail(url=self.guild.icon_url)
-            #embed.set_image(url=self.guild.icon_url)
-            #await channel.send(embed=embed)
+            # embed.set_thumbnail(url=self.guild.icon_url)
+            # embed.set_image(url=self.guild.icon_url)
+            # await channel.send(embed=embed)
 
-            #Send file
-            #await channel.send(file=File("./data/images/burger_test.jpg"))
-
+            # Send file
+            # await channel.send(file=File("./data/images/burger_test.jpg"))
 
             print("bot ready")
 
