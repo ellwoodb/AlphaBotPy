@@ -1,7 +1,14 @@
-from launcher import VERSION
+from datetime import datetime
+from discord import file
+from discord.ext.commands.errors import CommandNotFound
+from discord.file import File
+from discord.gateway import ReconnectWebSocket
+#from launcher import VERSION
 from sys import version
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from discord.ext.commands import Bot as BotBase
+from discord import Embed
+from disocord.commands import CommandNotFound
 
 PREFIX = "+"
 OWNER_IDS = [752492641970814986]
@@ -19,7 +26,7 @@ class Bot(BotBase):
     def run(self, version):
         self.VERSION = version
 
-        with open(".lib/bot/token.0", "r", encoding="utf-8") as tf:
+        with open("./lib/bot/token.0", "r", encoding="utf-8") as tf:
             self.TOKEN = tf.read()
 
         print("running bot...")
@@ -31,16 +38,55 @@ class Bot(BotBase):
     async def on_disconnect(self):
         print("bot disconnected")
 
+    async def on_error(self, err, *args, **kwargs):
+        if err == "on_command_error":
+            await args[0].send("Etwas ist schief gelaufen. :(")
+
+        error_log = self.get_channel(768867099614773358)
+        await error_log.send("Oh ein Error!")
+            
+    async def on_command_error(self, ctx, exc):
+        if isinstance(exc, CommandNotFound):
+            pass
+
+        elif hasattr(exc, "original"):
+            raise exc.original
+
+        else:
+            raise exc
+
     async def on_ready(self):
         if not self.ready:
             self.ready = True
             self.guild = self.get_guild(503104675256729600)
             print("bot ready")
 
+            #define channel to send message in
+            channel = self.get_channel(599569584005185539)
+
+            #Send message
+            await channel.send("Ich bin online!")
+
+            #Send embed
+            embed = Embed(title="Online", description="Alpha Bot ist online!", colour=0xFF0000, timestamp=datetime.utcnow())
+            fields = [("Name", "Value", True), 
+                      ("Test", "Test", True),
+                      ("Test2", "Test2", False)]
+            for name, value, inline in fields:
+                embed.add_field(name=name, value=value, inline=inline)
+            embed.set_footer(text="Footer Test")
+            embed.set_author(name="Alpha Bot", icon_url=self.guild.icon_url)
+            embed.set_thumbnail(url=self.guild.icon_url)
+            embed.set_image(url=self.guild.icon_url)
+            await channel.send(embed=embed)
+
+            #Send file
+            await channel.send(file=File("./data/images/burger_test.jpg"))
+
         else:
             print("bot reconnected")
 
-    async def on_message():
+    async def on_message(self, message):
         pass
 
 
