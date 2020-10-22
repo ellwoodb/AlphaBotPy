@@ -1,14 +1,10 @@
 from datetime import datetime
-from discord import file
-from discord.ext.commands.errors import CommandNotFound
-from discord.file import File
-from discord.gateway import ReconnectWebSocket
-#from launcher import VERSION
-from sys import version
+
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
 from discord.ext.commands import Bot as BotBase
-from discord import Embed
-from disocord.commands import CommandNotFound
+from discord import Embed , File
+from discord.ext.commands import CommandNotFound
 
 PREFIX = "+"
 OWNER_IDS = [752492641970814986]
