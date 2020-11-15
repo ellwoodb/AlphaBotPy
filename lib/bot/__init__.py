@@ -2,6 +2,8 @@ from datetime import datetime
 from glob import glob
 from asyncio import sleep
 from termcolor import colored
+import youtube_dl
+import discord
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -72,10 +74,11 @@ class Bot(BotBase):
 
     async def on_error(self, err, *args, **kwargs):
         if err == "on_command_error":
+            print(args, kwargs)
             await args[0].send("Etwas ist schief gelaufen. :(")
 
         error_log = self.get_channel(768867099614773358)
-        await error_log.send("Oh ein Error!")
+        await error_log.send("Error: " + args + kwargs)
 
     async def on_command_error(self, ctx, exc):
         if isinstance(exc, CommandNotFound):
@@ -91,21 +94,21 @@ class Bot(BotBase):
         if not self.ready:
             self.guild = self.get_guild(503104675256729600)
             self.stdout = self.get_channel(599569584005185539)
-            #self.scheduler.add_job(self.print_message, CronTrigger(second="0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55"))
+            # self.scheduler.add_job(self.print_message, CronTrigger(second="0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55"))
             self.scheduler.start()
 
             # Send message
             await self.stdout.send("Ich bin online!")
 
             # Send embed
-            #embed = Embed(title="Online", description="Alpha Bot ist online!", colour=0xFF0000, timestamp=datetime.utcnow())
+            # embed = Embed(title="Online", description="Alpha Bot ist online!", colour=0xFF0000, timestamp=datetime.utcnow())
             # fields = [("Name", "Value", True),
             #          ("Test", "Test", True),
             #          ("Test2", "Test2", False)]
             # for name, value, inline in fields:
             #    embed.add_field(name=name, value=value, inline=inline)
-            #embed.set_footer(text="Footer Test")
-            #embed.set_author(name="Alpha Bot", icon_url=self.guild.icon_url)
+            # embed.set_footer(text="Footer Test")
+            # embed.set_author(name="Alpha Bot", icon_url=self.guild.icon_url)
             # embed.set_thumbnail(url=self.guild.icon_url)
             # embed.set_image(url=self.guild.icon_url)
             # await channel.send(embed=embed)
